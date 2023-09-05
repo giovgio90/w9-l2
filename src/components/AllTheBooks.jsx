@@ -1,4 +1,4 @@
-import { Col, Container, Row, Card } from "react-bootstrap";
+import { Col, Button, Container, Row, Card } from "react-bootstrap";
 import books from "../data/scifi.json";
 import { Component } from "react";
 
@@ -9,15 +9,16 @@ class AllTheBooks extends Component {
     return (
       <Container>
         <Row>
-          {first20Books.map((book) => (
-            <Col xs={12} sm={6} md={4} lg={3} key={book.asin}>
+          {first20Books.map((book, index) => (
+            <Col xs={12} sm={6} md={4} lg={3} key={index}>
               <Card className={this.props.margin}>
-                <Card.Img variant="top" src={book.img} />
+                <Card.Img variant="top" src={book.img} style={{ height: "300px", objectFit: "contain" }} />
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
+                  <Card.Title className="text-truncate">{book.title}</Card.Title>
                   <Card.Text className={this.props.price}>
                     <strong className={this.props.price}>{book.price}€</strong>
                   </Card.Text>
+                  <Button variant="primary">Acquista</Button>
                 </Card.Body>
               </Card>
             </Col>

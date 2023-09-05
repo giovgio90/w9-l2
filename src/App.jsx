@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <MyNav className="bg-primary" margin="mb-4" linkStyle="text-white fw-bold" />
       <Welcome className="my-4 p-5 bg-primary text-white " />
-      <AllTheBooks className="mt-5" display="d-flex" price="fw-2 text-danger text-end pt-3" margin="mb-4" />
+      <AllTheBooks className="mt-5" display="d-flex" price="fw-2 text-danger  pt-3" margin="mb-4" />
       <MyFooter className="bg-primary text-center text-white p-3" container="container" footerStyle="fs-5 m-0" />
     </div>
   );
