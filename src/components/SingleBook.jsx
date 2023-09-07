@@ -20,7 +20,7 @@ class SingleBook extends Component {
       <Col xs={12} sm={6} md={4} lg={3}>
         <Card
           className="mb-4"
-          onClick={() => this.setState({ selected: this.state.selected ? false : true })}
+          onClick={() => this.setState({ selected: !this.state.selected })}
           style={{ border: this.state.selected ? "2px solid red" : "1px solid black" }}
         >
           <Card.Img
@@ -34,7 +34,7 @@ class SingleBook extends Component {
             <Card.Text className={this.props.colorPrice}>{this.props.book.price}€</Card.Text>
             <Button variant="primary">Acquista</Button>
           </Card.Body>
-          <CommentArea selected={this.state.selected} selectedBookId={this.props.book._id} />
+          <CommentArea selected={this.state.selected} selectedBookId={this.props.book.asin} />
         </Card>
       </Col>
     );

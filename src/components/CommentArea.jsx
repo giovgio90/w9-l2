@@ -4,15 +4,22 @@ import CommentList from "./CommentList";
 class CommentArea extends Component {
   state = {
     comments: [],
+    isLoading: true,
   };
 
   fetchComments = async () => {
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/comments/" + this.props.selectedBookId);
-      console.error("selectedBookId è undefined");
+      const response = await fetch("https://striveschool-api.herokuapp.com/api/comments/" + this.props.selectedBookId, {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjZhOTEwYmNhMDAwMTQ1ODNmZDkiLCJpYXQiOjE2OTQwOTk0NzMsImV4cCI6MTY5NTMwOTA3M30.6kcgMLFaLZ-lWK-U3ncdlPZxL4huAhbq8C5iJirgKSA",
+        },
+      });
 
       if (response.ok) {
         const comments = await response.json();
+        console.log("Lista dei commenti:", comments);
+
         this.setState({ comments });
         console.log(comments);
       }

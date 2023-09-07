@@ -12,11 +12,16 @@ class SingleComment extends Component {
   };
 
   render() {
-    // Accedi correttamente alle proprietà comment e rate all'interno del map
+    const { comment } = this.props;
+
     return (
       <div className="single-comment">
-        <p>Commento: {this.props.comment.comment}</p>
-        <p>Valutazione: {this.props.comment.rate}</p>
+        <p>
+          <strong>Commento:</strong> {comment.comment}
+        </p>
+        <p>
+          <strong>Valutazione:</strong> {comment.rate}
+        </p>
       </div>
     );
   }

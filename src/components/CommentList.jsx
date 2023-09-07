@@ -5,7 +5,7 @@ const CommentList = ({ comments }) => {
     <div className="comments-list">
       <h3>Recensioni:</h3>
       {comments.map((comment) => (
-        <SingleComment key={comment._id} comment={comment._id} />
+        <SingleComment key={comment._id} comment={comment} />
       ))}
     </div>
   );
