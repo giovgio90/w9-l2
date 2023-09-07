@@ -12,6 +12,10 @@ class BookList extends Component {
     this.setState({ searchQuery: query });
   };
 
+  handleBookSelect = (selectedBookId) => {
+    this.setState({ selectedBookId });
+  };
+
   render() {
     return (
       <Row>
@@ -29,7 +33,13 @@ class BookList extends Component {
         {this.props.books
           .filter((book) => book.title.toLowerCase().includes(this.state.searchQuery.toLocaleLowerCase()))
           .map((book, index) => (
-            <SingleBook colorPrice="text-danger fw-bold" key={index} book={book} />
+            <SingleBook
+              key={index}
+              book={book}
+              selectedBookId={this.props.selectedBookId}
+              onBookSelect={this.props.onBookSelect}
+              colorPrice="text-danger fw-bold"
+            />
           ))}
       </Row>
     );
