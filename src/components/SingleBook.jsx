@@ -2,7 +2,7 @@
 import { Component } from "react";
 import { Button, Card, Col } from "react-bootstrap";
 
-import CommentArea from "./CommentArea";
+// import CommentArea from "./CommentArea";
 
 class SingleBook extends Component {
   state = {
@@ -17,7 +17,7 @@ class SingleBook extends Component {
 
   render() {
     return (
-      <Col xs={12} sm={6} md={4} lg={3}>
+      <Col xs={6}>
         <Card
           className="mb-4"
           onClick={() => this.setState({ selected: !this.state.selected })}
@@ -34,7 +34,7 @@ class SingleBook extends Component {
             <Card.Text className={this.props.colorPrice}>{this.props.book.price}€</Card.Text>
             <Button variant="primary">Acquista</Button>
           </Card.Body>
-          <CommentArea selected={this.state.selected} selectedBookId={this.props.book.asin} />
+          {/* <CommentArea selected={this.state.selected} selectedBookId={this.props.book.asin} /> */}
         </Card>
       </Col>
     );
