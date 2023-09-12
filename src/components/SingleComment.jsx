@@ -1,30 +1,33 @@
-import { Component } from "react";
+import { Button, ListGroup } from "react-bootstrap";
 
-class SingleComment extends Component {
-  state = {
-    isExpanded: false,
+const SingleComment = ({ comment }) => {
+  const deleteComment = async (asin) => {
+    try {
+      let response = await fetch("https://striveschool-api.herokuapp.com/api/comments/" + asin, {
+        method: "DELETE",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjZhOTEwYmNhMDAwMTQ1ODNmZDkiLCJpYXQiOjE2OTQxMTc1NjAsImV4cCI6MTY5NTMyNzE2MH0.cZ9eJ3heKWBoV9dY4r1dg0ie2XY0dOT2841_BFAw7A0",
+        },
+      });
+      if (response.ok) {
+        alert("Comment was deleted successfully!");
+      } else {
+        alert("Error - comment was NOT deleted!");
+      }
+    } catch (error) {
+      alert("Error - comment was NOT deleted!");
+    }
   };
 
-  toggleExpand = () => {
-    this.setState((prevState) => ({
-      isExpanded: !prevState.isExpanded,
-    }));
-  };
-
-  render() {
-    const { comment } = this.props;
-
-    return (
-      <div className="single-comment">
-        <p>
-          <strong>Commento:</strong> {comment.comment}
-        </p>
-        <p>
-          <strong>Valutazione:</strong> {comment.rate}
-        </p>
-      </div>
-    );
-  }
-}
+  return (
+    <ListGroup.Item>
+      {comment.comment}
+      <Button variant="danger" className="ml-2" onClick={() => deleteComment(comment._id)}>
+        Delete
+      </Button>
+    </ListGroup.Item>
+  );
+};
 
 export default SingleComment;

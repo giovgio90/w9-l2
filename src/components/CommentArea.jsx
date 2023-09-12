@@ -1,48 +1,65 @@
-import { Component } from "react";
+import React, { useState, useEffect } from "react";
 import CommentList from "./CommentList";
+import AddComment from "./AddComment";
+import Loading from "./Loading";
+import Error from "./Error";
+import { ListGroup } from "react-bootstrap";
 
-class CommentArea extends Component {
-  state = {
-    comments: [],
-    isLoading: true,
-  };
+const CommentArea = (props) => {
+  const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  fetchComments = async () => {
-    try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/comments/" + this.props.selectedBookId, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4NjZhOTEwYmNhMDAwMTQ1ODNmZDkiLCJpYXQiOjE2OTQxMTc1NjAsImV4cCI6MTY5NTMyNzE2MH0.cZ9eJ3heKWBoV9dY4r1dg0ie2XY0dOT2841_BFAw7A0",
-        },
-      });
-
-      if (response.ok) {
-        const comments = await response.json();
-        console.log("Lista dei commenti:", comments);
-
-        this.setState({ comments });
-        console.log(comments);
+  useEffect(() => {
+    const fetchComments = async () => {
+      setIsLoading(true);
+      try {
+        let response = await fetch("https://striveschool-api.herokuapp.com/api/books/" + props.asin + "/comments/", {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGY5Y2NhMThkM2Q0OTAwMTRjZmQ3ZmEiLCJpYXQiOjE2OTQwOTI0NTAsImV4cCI6MTY5NTMwMjA1MH0.fgB8DJQ6GZCMZGZ7c_5mcKN-RG4yiVrx-xXRPLfBdG4",
+          },
+        });
+        if (response.ok) {
+          let comments = await response.json();
+          setComments(comments);
+          setIsLoading(false);
+          setIsError(false);
+          setIsFirstLoad(false);
+        } else {
+          console.log("error");
+          setIsLoading(false);
+          setIsError(true);
+        }
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+        setIsError(true);
       }
-    } catch (error) {
-      console.error(error);
+    };
+
+    if (props.asin) {
+      fetchComments();
     }
-  };
+  }, [props.asin]);
 
-  componentDidMount() {
-    if (this.props.selectedBookId) {
-      this.fetchComments();
-    }
-  }
+  return (
+    <div className="text-center">
+      <h2>CommentArea</h2>
+      {isError && <Error />}
+      <AddComment asin={props.asin} />
+      {isLoading && <Loading />}
 
-  render() {
-    const { comments } = this.state;
-
-    return this.props.selected ? (
-      <div>
-        <CommentList comments={comments} />
-      </div>
-    ) : null;
-  }
-}
+      {!isLoading && !isFirstLoad && comments.length === 0 ? (
+        <ListGroup>
+          <ListGroup.Item>Non ci sono ancora commenti</ListGroup.Item>
+        </ListGroup>
+      ) : (
+        <CommentList commentsToShow={comments} />
+      )}
+    </div>
+  );
+};
 
 export default CommentArea;

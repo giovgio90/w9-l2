@@ -1,55 +1,52 @@
-import { Component } from "react";
+import React, { useState, useEffect } from "react";
 import SingleBook from "./SingleBook";
-import CommentArea from "./CommentArea";
-
 import { Col, Form, Row } from "react-bootstrap";
 
-class BookList extends Component {
-  state = {
-    searchQuery: "",
-    selectedBook: null,
-  };
+const BookList = (props) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState(props.books);
 
-  getQuery = (query) => {
-    this.setState({ searchQuery: query });
-  };
+  useEffect(() => {
+    const filtered = props.books.filter((book) => book.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    setFilteredBooks(filtered);
+  }, [searchQuery, props.books]);
 
-  handleBookSelect = (selectedBookId) => {
-    this.setState({ selectedBookId });
-  };
-
-  render() {
-    return (
+  return (
+    <>
       <Row>
-        <Col xs={6}>
-          <Form.Group className="mb-3">
-            <Form.Label className="text-start">Cerca un libro</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Scrivi un titolo.."
-              value={this.state.searchQuery}
-              onChange={(event) => this.getQuery(event.target.value)}
-            />
-          </Form.Group>
-
-          {this.props.books
-            .filter((book) => book.title.toLowerCase().includes(this.state.searchQuery.toLocaleLowerCase()))
-            .map((book, index) => (
-              <SingleBook
-                key={index}
-                book={book}
-                selectedBookId={this.props.selectedBookId}
-                onBookSelect={this.props.onBookSelect}
-                colorPrice="text-danger fw-bold"
-              />
+        <Col>
+          <Row>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label className="text-start">Cerca un libro</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Scrivi un titolo.."
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row>
+            {filteredBooks.map((book) => (
+              <Col xs={12} md={4} key={book.asin}>
+                <SingleBook
+                  book={book}
+                  setNewAsin={props.setNewAsin}
+                  colorPrice="text-danger fw-bold"
+                  selectedAsin={props.selectedAsin}
+                />
+              </Col>
             ))}
+          </Row>
         </Col>
-        <Col md={6}>
+        {/* <Col md={4}>
           <CommentArea asin={this.state.selectedBook} />
-        </Col>
+        </Col> */}
       </Row>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default BookList;
