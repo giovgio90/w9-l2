@@ -20,7 +20,7 @@ function App() {
     <>
       <MyNav navBar="bg-primary mb-4" linkStyle="text-white fw-bold" />
       <Container>
-        <Welcome className="my-4 p-5 bg-primary text-white " />
+        <Welcome className="my-4 p-5 bg-primary text-white text-center" />
         <Row>
           <Col md={8}>
             <BookList books={fantasy} setNewAsin={setNewAsin} selectedAsin={selectedAsin} />
